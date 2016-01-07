@@ -21,6 +21,15 @@
 <header id="top">
   <h1>何をなすべきか!!!!!!!!!</h1>
 </header>
+<div id="new_todo">
+  <form action="/todos.json" method="post">
+    <input id="auth_token" type="hidden" name="authenticity_token">
+    <input name="todo[comment]" type="text">
+    <input name="todo[done]" type="hidden" value="0">
+    <input name="todo[done]" type="checkbox" value="1">
+    <input type="submit">
+  </form>
+</div>
 <div id="todos"></div>
 <a href="/todos"><div id="hensyu">スケジュールを編集する</div></a>
 <footer>
@@ -29,6 +38,24 @@
   <p id="pageback" class="btn01 cleafix"><a href="javascript:history.go(-1)">&lt;&lt;前ページに戻る</a></p>
 </footer>
 <script>
+  // Javascriptをヘッドタグ内に入れる場合、DOMContentLoadedが必要になる
+  document.addEventListener("DOMContentLoaded",function(event){
+    var xhr = new XMLHttpRequest();
+    //新規追加POSTの場合Railsフォームのtokenが必要なので、それを埋め込む
+    xhr.open("GET", "/todos/new.json", true);
+    xhr.onload = function(e){
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          console.log(xhr.responseText);
+          var json_data = JSON.parse(xhr.responseText);
+          document.getElementById("auth_token").value = json_data.token;
+        }
+      }
+    }
+  xhr.send(null);
+  });
+
+
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "/todos.json", true);
   xhr.onload = function (e) {
