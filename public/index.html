@@ -22,12 +22,12 @@
   <h1>何をなすべきか!!!!!!!!!</h1>
 </header>
 <div id="new_todo">
-  <form action="/todos.json" method="post">
+  <form id="new_do" action="/todos.json" method="post">
     <input id="auth_token" type="hidden" name="authenticity_token">
     <input name="todo[comment]" type="text">
     <input name="todo[done]" type="hidden" value="0">
     <input name="todo[done]" type="checkbox" value="1">
-    <input type="submit">
+    <!--<input type="submit">-->
   </form>
 </div>
 <div id="todos"></div>
@@ -54,6 +54,20 @@
     }
   xhr.send(null);
   });
+
+$('#new_do').on('submit', function(event) {
+  event.preventDefault(); // 本来のPOSTを打ち消すおまじない
+  $.post(
+    $(this).attr('action'),
+    $(this).serializeArray(),
+    function(result) {
+      alert('追加しました-----(・∀・)-----!!!');
+    },
+    'json'
+  );
+  window.location.reload();
+});
+
 
 
   var xhr = new XMLHttpRequest();
