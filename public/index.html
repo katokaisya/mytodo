@@ -81,7 +81,16 @@ $('#new_do').on('submit', function(event) {
         var todos = document.getElementById("todos");
         // "todos"にJsonのデータを入れる
         var json_data = JSON.parse(xhr.responseText);
-
+        //配列をソート
+        json_data.sort(
+          function(a,b){
+            var aId = a["id"];
+            var bId = b["id"];
+            if( aId < bId ) return 1;
+            if( aId > bId ) return -1;
+            return 0;
+          }
+        );
         // todos.innerHTML = json_data[0]["comment"];
         var ul_tag = document.createElement("ul");
         for(i=0;i<json_data.length;i++){
